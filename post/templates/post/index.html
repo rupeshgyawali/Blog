@@ -1,0 +1,38 @@
+{% extends "post/base.html" %}
+{% load static %}
+    <!-- content -->
+{% block content %}
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-sm-9 mx-auto">
+          <div class="row">
+            <div class="col-12">
+              {% for post in posts %}
+              <div class="post pb-3 mb-3">
+                <div class="h3">
+                  {{ post.title }} 
+                </div>
+                <p class="post-hint">
+                  Lorem ipsum dolor<br>
+                  {{ post.updated }}
+                </p>
+                <div class="col-lg-6 col-md-8 col-sm-10 col-12 pl-0">
+                  <img src="{% static 'post/images/1.jpg' %}" class="img-fluid">
+                </div>
+                <div class="text-muted my-2">
+                  {{ post.content }}
+                </div>
+                <a href="{{ post.get_absolute_url }}"><button class="btn btn-primary">More</button></a>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 col">
+          <div style="border-left: 1px outset #e4d5db7d !important" class="pl-1">
+            
+          </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

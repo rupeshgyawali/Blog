@@ -1,0 +1,14 @@
+.bg-nav{
+    background-color:#f0f8ff;
+    box-shadow: 0 0 20px 0px #67cabb52;
+}
+.post{
+	border-bottom: 2px solid #03a9f429;
+}
+.footer{
+	background-color: #888888;
+}
+.post-hint{
+	color: #00000054;
+	line-height: 1rem;
+}
