@@ -3,22 +3,27 @@
 
 {% block content %}
 	
-	<div class="container">
-		<div class="container-fluid my-5">
-			<div class="h3">
-				{{ post.title }}
+
+		<div class="container my-5">
+			<div class="col-md-8 col-sm-10 offset-md-2 offset-sm-1">
+				<div class="h3">
+					{{ post.title }}
+				</div>
+				<p class="post-hint">
+					Lorem ipsum dolor <br>
+					{{ post.updated }}
+				</p>
+				<div class="col-lg-6 col-md-8 col-sm-10 col-12 pl-0">
+				  <img src="{% static 'post/images/1.jpg' %}" class="img-fluid">
+				</div>
+				<div class="text">
+					{{ post.content }}
+				</div>
+				<a href="{% url 'post:edit' post.id %}"><button class="btn btn-danger">Edit</button></a>
+				<a href="{% url 'post:delete' post.id %}"><button class="btn btn-danger">Delete</button></a>
 			</div>
-			<p class="post-hint">
-				Lorem ipsum dolor <br>
-				{{ post.updated }}
-			</p>
-			<div class="col-lg-6 col-md-8 col-sm-10 col-12 pl-0">
-			  <img src="{% static 'post/images/1.jpg' %}" class="img-fluid">
-			</div>
-			<div class="text">
-				{{ post.content }}
-			</div>
+			
 		</div>
-	</div>
+
 
 {% endblock %}
