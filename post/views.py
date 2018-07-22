@@ -11,29 +11,29 @@ def index(request):
 	context = {'posts': paginator.get_page(page) }
 	return render(request, 'post/index.html', context)
 
-def details(request, pk):
-	post = get_object_or_404(Post, pk=pk)
+def details(request, slug):
+	post = get_object_or_404(Post, slug=slug)
 	return render(request, 'post/details.html', {'post':post})
 
 def create(request):
-	form = PostModelForm(request.POST or None)
+	form = PostModelForm(request.POST or None, request.FILES or None)
 	if request.method == "POST":
 		if form.is_valid():
 			newPost = form.save(commit = False)
 			newPost.save()
-			return redirect('post:details', pk = newPost.id)
+			return redirect('post:details', slug = newPost.slug)
 
 	return render(request, 'post/create.html', {'form':form})
 
 
 def edit(request, pk):
 	instance = get_object_or_404(Post, pk = pk)
-	form = PostModelForm(request.POST or None, instance = instance)
+	form = PostModelForm(request.POST or None, request.FILES or None, instance = instance)
 	if request.method == "POST":
 		if form.is_valid:
 			post = form.save(commit=False)
 			post.save()
-			return redirect('post:details', pk = post.id)
+			return redirect('post:details', slug = post.slug)
 
 	return render(request, 'post/edit.html', {'form': form})
 
