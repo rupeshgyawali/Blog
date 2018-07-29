@@ -4,6 +4,23 @@
 {% block content %}
     <div class="container mt-5">
       <div class="row">
+
+        {% if user.is_authenticated and not request.GET.search %}
+        <div class="col-12">
+          <a href="?">From your followings</a>
+          <a href="?post=allpost&page={{ posts.number }}" class='ml-3'>All Posts</a>
+        </div>
+        {% endif %}
+        <div class="col-12">
+          {% if not posts %}
+            {% if msg %}
+              {{ msg }}
+            {% endif %}
+            {% if not user.userprofile.follows.all %}
+              <div class="text-muted mt-3">Follow other author to view there posts here.</div>
+            {% endif %}
+          {% endif %}
+        </div>
         <div class="col-sm-9 mx-auto">
           <div class="row">
             <div class="col-12">
@@ -13,25 +30,41 @@
                   {{ post.title }} 
                 </div>
                 <p class="post-hint">
-                  Lorem ipsum dolor<br>
+                  {% if post.author.get_full_name %}Author: <a href="{% url 'post:profile' post.author.userprofile.id %}">{{ post.author.get_full_name }}</a><br>{% endif %}
                   {{ post.updated }}
-                </p>
-                <div class="col-lg-6 col-md-8 col-sm-10 col-12 pl-0">
-                  {% if post.image %}
-                  <img src="{{ post.image.url }}" class="img-fluid">
+                  {% if post.draft %} 
+                    <span class="text-danger m-0" style="border: 1px solid red;border-radius: 0.2rem; padding-right: 0.1rem">
+                      Draft
+                    </span>
                   {% endif %}
-                </div>
+                </p>
+                {% if post.image %}
+            <div class="row">
+              <div class="col-md-6">
+                <img src="{{ post.image.url }}" class="img-fluid">  
+              </div>
+              <div class="col-md-6">
                 <div class="text-muted my-2">
-                  {{ post.content }}
+                  {{ post.content|truncatechars:200 }}
                 </div>
                 <a href="{{ post.get_absolute_url }}"><button class="btn btn-primary">More</button></a>
               </div>
+            </div>
+
+            {% else %}
+            <div class="text-muted my-2">
+              {{ post.content|truncatechars:200 }}
+            </div>
+            <a href="{{ post.get_absolute_url }}"><button class="btn btn-primary">More</button></a>
+          {% endif %}
+          </div>
               {% endfor %}
+              {% if posts and request.GET.post %}
               <div class="pagination">
                   <span class="step-links">
                       {% if posts.has_previous %}
-                          <a href="?page=1">&laquo; first</a>
-                          <a href="?page={{ posts.previous_page_number }}">previous</a>
+                          <a href="?post=allpost&page=1">&laquo; first</a>
+                          <a href="?post=allpost&page={{ posts.previous_page_number }}">previous</a>
                       {% endif %}
 
                       <span class="current">
@@ -39,11 +72,12 @@
                       </span>
 
                       {% if posts.has_next %}
-                          <a href="?page={{ posts.next_page_number }}">next</a>
-                          <a href="?page={{ posts.paginator.num_pages }}">last &raquo;</a>
+                          <a href="?post=allpost&page={{ posts.next_page_number }}">next</a>
+                          <a href="?post=allpost&page={{ posts.paginator.num_pages }}">last &raquo;</a>
                       {% endif %}
                   </span>
               </div>
+              {% endif %}
             </div>
           </div>
         </div>

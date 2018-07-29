@@ -1,0 +1,16 @@
+<style type="text/css">
+	
+	ul.messages{
+		background-color: rgb(200, 241, 174);
+		list-style-type: none;
+	}
+
+</style>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}

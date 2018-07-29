@@ -10,8 +10,13 @@
 					{{ post.title }}
 				</div>
 				<p class="post-hint">
-					Lorem ipsum dolor <br>
+					{% if post.author.get_full_name %}Author: <a href="{% url 'post:profile' post.author.userprofile.id %}">{{ post.author.get_full_name }}</a><br>{% endif %}
 					{{ post.updated }}
+					{% if post.draft %} 
+					  <span class="text-danger m-0" style="border: 1px solid red;border-radius: 0.2rem; padding-right: 0.1rem">
+					    Draft
+					  </span>
+					{% endif %}
 				</p>
 				<div class="col-lg-6 col-md-8 col-sm-10 col-12 pl-0">
 					{% if post.image %}
@@ -21,8 +26,11 @@
 				<div class="text">
 					{{ post.content }}
 				</div>
-				<a href="{% url 'post:edit' post.id %}"><button class="btn btn-danger">Edit</button></a>
+				{% if user.is_authenticated and user == post.author %}
+				<a href="{% url 'post:edit' post.id %}"><button class="btn btn-success">Edit</button></a>
 				<a href="{% url 'post:delete' post.id %}"><button class="btn btn-danger">Delete</button></a>
+				{% endif %}
+
 			</div>
 			
 		</div>

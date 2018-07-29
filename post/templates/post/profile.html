@@ -1,0 +1,140 @@
+{% extends 'post/base.html' %}
+{% load static %}
+
+{% block content %}
+	
+
+		<div class="container my-5">
+			<div class="col-md-8 col-sm-10 offset-md-2 offset-sm-1">
+				
+				<div class="row">
+					<div class="col-sm-4">
+						{% if profile.profile_pic %}
+						<img src="{{ profile.profile_pic.url }}" class="img-thumbnail"></img>
+						{% endif %}
+					</div>
+					<div class="col-sm-8">
+						<div class="h2">
+							{{ profile.user.get_full_name }}
+							<div class="text-muted mt-0 h5">
+								@{{ profile.user.username }}
+							</div>
+						</div>
+						<div class="text-muted m-0">{{ profile.follows.all.count }} Following 
+						{{ profile.followed_by.all.count }} Followers</div>
+						 {% if user != profile.user and profile not in user.userprofile.follows.all %}
+						 	<a href="{% url 'post:follow' profile.id %}">Follow</a>
+						 {% elif profile in user.userprofile.follows.all %}
+						 	Followed 
+						 	<a href="{% url 'post:unfollow' profile.id %}">Unfollow</a>
+						 {% endif %}
+						 {% if profile.website %}
+						 <div class="text-muted">
+						 	{{ profile.website }}</div>
+						 {% endif %}
+						 {% if profile.date_of_birth %}
+						 <div class="text-muted">
+						 	{{ profile.date_of_birth }}</div>
+						 {% endif %}
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-12">
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+					  <li class="nav-item">
+					    <a class="nav-link active" id="post-tab" data-toggle="tab" href="#post" role="tab" aria-controls="post" aria-selected="true">Post</a>
+					  </li>
+					  <li class="nav-item">
+					    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">
+					    {% if user == profile.user %}
+					    	Profile Info
+					    {% else %}
+					        About Author
+					    {% endif %} 	
+					    </a>
+					  </li>
+					  {% if user == profile.user %}
+					  <li class="nav-item">
+					    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Edit Profile</a>
+					  </li>
+					  {% endif %} 
+					</ul>
+				</div>
+					<div class="tab-content" id="myTabContent">
+					<!-- Post Tab -->
+					  <div class="tab-pane fade show active" id="post" role="tabpanel" aria-labelledby="post-tab">
+					
+					  	{% for post in posts %}
+
+					  	<div class="post pb-3 mb-3 mt-3">
+					  	  <div class="h5">
+					  	    {{ post.title }} 
+					  	  </div>
+					  	  <p class="post-hint">
+					  	    {{ post.updated }}
+					  	    {% if post.draft %} 
+					  	      <span class="text-danger m-0" style="border: 1px solid red;border-radius: 0.2rem; padding-right: 0.1rem">
+					  	        Draft
+					  	      </span>
+					  	    {% endif %}
+					  	  </p>
+					  	  
+					  	  {% if post.image %}
+					  	  <div class="row mt-3">
+					  		  <div class="col-md-6">
+					  		    <img src="{{ post.image.url }}" class="img-fluid">  
+					  		  </div>
+					  		  <div class="col-md-6">
+					  		  	<div class="text-muted my-2">
+					  		  	  {{ post.content|truncatechars:200 }}
+					  		  	</div>
+					  		  	<a href="{{ post.get_absolute_url }}"><button class="btn btn-primary">More</button></a>
+					  		  </div>
+					  	  </div>
+
+					  	  {% else %}
+					  	  <div class="text-muted my-2">
+					  	    {{ post.content|truncatechars:200 }}
+					  	  </div>
+					  	  <a href="{{ post.get_absolute_url }}"><button class="btn btn-primary">More</button></a>
+					  	{% endif %}
+					  	</div>
+					  	{% endfor %}
+					  </div>
+					  	<!-- Profile Tab -->
+					  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+					  	<div class="row mt-3">
+					  		<div class="col-sm-4">
+					  			{% if profile.profile_pic %}
+					  			<img src="{{ profile.profile_pic.url }}" class="img-thumbnail"></img>
+					  			{% endif %}
+					  		</div>
+					  		<div class="col-sm-8">
+					  			{% if user == profile.user %}
+					  			<form method="POST" enctype="multipart/form-data">
+					  				{% csrf_token %}
+					  				{{ form.as_p }}
+					  				<input type="submit" name="" value = 'Change' class='btn btn-success'>
+					  			</form>
+					  			{% endif %}
+					  		</div>
+					  	</div>
+					  </div>
+					  <!-- About Tab -->
+					  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+					  	 {% if profile.bio %}
+						 <div class="text-muted mt-3">
+						 	{{ profile.bio }}</div>
+						 {% endif %}
+					  </div>
+					</div>
+
+				</div>
+
+			</div>
+			
+		</div>
+
+
+{% endblock %}
