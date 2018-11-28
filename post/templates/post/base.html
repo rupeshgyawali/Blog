@@ -30,20 +30,20 @@
             </li>
               {% if user.is_authenticated %}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'post:profile' user.userprofile.id %}">Profile</a>
+                <a class="nav-link" href="{% url 'profile:profile' user.userprofile.id %}">Profile</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'post:create' %}">New Post</a>
               </li>
               <li class="nav-item">
-              <a class="nav-link" href="{% url 'post:logout' %}">LogOut</a>
+              <a class="nav-link" href="{% url 'profile:logout' %}">LogOut</a>
               </li>
               {% else %}
               <li class="nav-item">
-              <a class="nav-link" href="{% url 'post:login' %}">Login</a>
+              <a class="nav-link" href="{% url 'profile:login' %}">Login</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'post:register' %}">Register</a>
+                <a class="nav-link" href="{% url 'profile:register' %}">Register</a>
               </li>
               {% endif %}
             
@@ -59,7 +59,7 @@
     {% block content %}{% endblock %}
 
     <!-- Fotter -->
-    <div class="container-fluid mt-3 footer">
+    <div class="container-fluid mt-3 footer py-5">
       <div class="row mx-auto">
         <div class="col-md-5 col-sm-6 offset-md-1">
           <div class="h4 my-2">

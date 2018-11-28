@@ -12,3 +12,21 @@
 	color: #00000054;
 	line-height: 1rem;
 }
+ul.nonfield.errorlist{
+	list-style-type: none;
+	color: #f30000;
+	border: 1px solid #ff0000;
+	padding: 1rem;
+}
+.form-box{
+	background-color: #fbfbfb;
+	border: 1px solid #00000017;
+}
+.profileClass{
+	border:1px solid #00000017;
+	border-radius: 0.2rem;
+	border-width: 1px 0px;
+}
+.img-thumb{
+	border-radius: 50%;
+}

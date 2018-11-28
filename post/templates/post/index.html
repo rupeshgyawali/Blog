@@ -13,11 +13,47 @@
         {% endif %}
         <div class="col-12">
           {% if not posts %}
-            {% if msg %}
-              {{ msg }}
-            {% endif %}
-            {% if not user.userprofile.follows.all %}
+            {% if request.GET.search %}
+              No Search result found.
+            {% elif user.is_authenticated and not user.userprofile.follows.all %}
               <div class="text-muted mt-3">Follow other author to view there posts here.</div>
+              <div class="row">
+                {% for profile in profiles %}
+                <div class="col-sm-7 profileClass row p-2 my-2">
+                  <div class="col-sm-3 col-4">
+                    <div>
+                      {% if profile.profile_pic %}
+                      <img src="{{ profile.profile_pic.url }}" width=100% class = 'img-thumb'></img>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="col-sm-9 col-8">
+                    <div class="h5">
+                      {{ profile.user.get_full_name }}
+                      <div class="text-muted mt-0 h5">
+                        @{{ profile.user.username }}
+                      </div>
+                    </div>
+                    <div class="text-muted m-0">{{ profile.follows.all.count }} Following 
+                    {{ profile.followed_by.all.count }} Followers</div>
+                     {% if user != profile.user and profile not in user.userprofile.follows.all %}
+                      <a href="{% url 'profile:follow' profile.id %}">Follow</a>
+                     {% elif profile in user.userprofile.follows.all %}
+                      Followed 
+                      <a href="{% url 'profile:unfollow' profile.id %}">Unfollow</a>
+                     {% endif %}
+                     {% if profile.website %}
+                     <div class="text-muted">
+                      {{ profile.website }}</div>
+                     {% endif %}
+                     {% if profile.date_of_birth %}
+                     <div class="text-muted">
+                      {{ profile.date_of_birth }}</div>
+                     {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
             {% endif %}
           {% endif %}
         </div>
@@ -30,7 +66,7 @@
                   {{ post.title }} 
                 </div>
                 <p class="post-hint">
-                  {% if post.author.get_full_name %}Author: <a href="{% url 'post:profile' post.author.userprofile.id %}">{{ post.author.get_full_name }}</a><br>{% endif %}
+                  {% if post.author.get_full_name %}Author: <a href="{% url 'profile:profile' post.author.userprofile.id %}">{{ post.author.get_full_name }}</a><br>{% endif %}
                   {{ post.updated }}
                   {% if post.draft %} 
                     <span class="text-danger m-0" style="border: 1px solid red;border-radius: 0.2rem; padding-right: 0.1rem">

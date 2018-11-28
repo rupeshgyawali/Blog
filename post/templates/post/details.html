@@ -10,7 +10,7 @@
 					{{ post.title }}
 				</div>
 				<p class="post-hint">
-					{% if post.author.get_full_name %}Author: <a href="{% url 'post:profile' post.author.userprofile.id %}">{{ post.author.get_full_name }}</a><br>{% endif %}
+					{% if post.author.get_full_name %}Author: <a href="{% url 'profile:profile' post.author.userprofile.id %}">{{ post.author.get_full_name }}</a><br>{% endif %}
 					{{ post.updated }}
 					{% if post.draft %} 
 					  <span class="text-danger m-0" style="border: 1px solid red;border-radius: 0.2rem; padding-right: 0.1rem">

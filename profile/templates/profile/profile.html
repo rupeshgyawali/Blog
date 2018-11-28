@@ -10,7 +10,7 @@
 				<div class="row">
 					<div class="col-sm-4">
 						{% if profile.profile_pic %}
-						<img src="{{ profile.profile_pic.url }}" class="img-thumbnail"></img>
+						<img src="{{ profile.profile_pic.url }}" width=100% class = 'img-thumb'></img>
 						{% endif %}
 					</div>
 					<div class="col-sm-8">
@@ -23,10 +23,10 @@
 						<div class="text-muted m-0">{{ profile.follows.all.count }} Following 
 						{{ profile.followed_by.all.count }} Followers</div>
 						 {% if user != profile.user and profile not in user.userprofile.follows.all %}
-						 	<a href="{% url 'post:follow' profile.id %}">Follow</a>
+						 	<a href="{% url 'profile:follow' profile.id %}">Follow</a>
 						 {% elif profile in user.userprofile.follows.all %}
 						 	Followed 
-						 	<a href="{% url 'post:unfollow' profile.id %}">Unfollow</a>
+						 	<a href="{% url 'profile:unfollow' profile.id %}">Unfollow</a>
 						 {% endif %}
 						 {% if profile.website %}
 						 <div class="text-muted">
